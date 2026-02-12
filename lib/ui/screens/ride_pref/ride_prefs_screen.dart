@@ -48,12 +48,11 @@ class RidePrefsScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-
               // 2 - THE FORM
               RidePrefForm(initRidePref: RidePrefsService.selectedRidePref),
               SizedBox(height: BlaSpacings.m),
 
-              // 3 - THE HISTORY 
+              // 3 - THE HISTORY
               SizedBox(
                 height: 200, // Set a fixed height
                 child: ListView.builder(
@@ -70,7 +69,7 @@ class RidePrefsScreen extends StatelessWidget {
               ),
             ],
           ),
-        ),   
+        ),
       ],
     );
   }

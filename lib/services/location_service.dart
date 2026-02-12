@@ -8,5 +8,6 @@ import '../models/ride/locations.dart';
 ///
 class LocationsService {
   // static const List<Location> availableLocations =
-      // fakeLocations; // TODO for now fake data
+  // fakeLocations; // TODO for now fake data
+  static const List<Location> availableLocations = fakeLocations;
 }

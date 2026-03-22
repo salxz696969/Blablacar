@@ -1,12 +1,12 @@
 class Artist {
   final String id;
-  final String ganre;
+  final String genre;
   final Uri imageUrl;
   final String name;
 
   Artist({
     required this.id,
-    required this.ganre,
+    required this.genre,
     required this.imageUrl,
     required this.name,
   });

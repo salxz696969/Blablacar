@@ -15,7 +15,7 @@ class ArtistDto {
     return Artist(
       id: json[idKey],
       name: json[nameKey],
-      ganre: json[genreKey],
+      genre: json[genreKey],
       imageUrl: Uri.parse(json[imageUrlKey] as String),
     );
   }
@@ -25,7 +25,7 @@ class ArtistDto {
     return {
       idKey: artist.id,
       nameKey: artist.name,
-      genreKey: artist.ganre,
+      genreKey: artist.genre,
       imageUrlKey: artist.imageUrl.toString(),
     };
   }

@@ -1,7 +1,9 @@
+import 'package:blabla/firebase/model/artists/artist.dart';
+
 class Song {
   final String id;
   final String title;
-  final String? artist;
+  Artist? artist;
   final String artistId;
   final Uri imageUrl;
   final Duration duration;
@@ -18,5 +20,12 @@ class Song {
   @override
   String toString() {
     return 'Song(id: $id, title: $title, artist: $artist, imageUrl: $imageUrl, duration: $duration)';
+  }
+
+  void setArtist(Artist artist) {
+    if (artist.id != artistId) {
+      throw Exception('Artist ID does not match');
+    }
+    this.artist = artist;
   }
 }

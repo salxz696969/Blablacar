@@ -16,6 +16,11 @@ class SongTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final artistName = song.artist != null
+        ? "${song.artist!.name} - ${song.artist!.genre}"
+        : "Unknown Artist";
+
+    final songDuration = song.duration.inMinutes;
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
@@ -26,7 +31,7 @@ class SongTile extends StatelessWidget {
         child: ListTile(
           onTap: onTap,
           title: Text(song.title),
-          subtitle: Text(song.artist?? song.artistId),
+          subtitle: Text("$songDuration min - $artistName"),
           leading: CircleAvatar(
             radius: 24,
             backgroundImage: NetworkImage(song.imageUrl.toString()),

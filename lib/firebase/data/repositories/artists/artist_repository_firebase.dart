@@ -34,5 +34,23 @@ class ArtistRepositoryFirebase extends ArtistRepository {
   }
 
   @override
-  Future<Artist?> fetchArtistById(String id) async {}
+  Future<List<Artist>> fetchArtistByIds(List<String> ids) async {
+    List<Artist> artists = [];
+    for (String id in ids) {
+      final http.Response response = await http.get(Uri.https(
+        'class-8804f-default-rtdb.asia-southeast1.firebasedatabase.app',
+        '/artists/$id.json',
+      ));
+
+        final artistJson = json.decode(response.body);
+
+        artists.add(ArtistDto.fromJson({
+          "id": id,
+          "name": artistJson['name'],
+          "imageUrl": artistJson['imageUrl'],
+          "genre": artistJson['genre'],
+        }));
+    }
+    return artists;
+  }
 }

@@ -2,9 +2,9 @@ import '../../model/songs/song.dart';
 
 class SongDto {
   static const String idKey = 'id';
-  static const String titleKey = 'name';
+  static const String titleKey = 'title';
   static const String artistIdKey = 'artistId';
-  static const String durationKey = 'durations'; // in ms
+  static const String durationKey = 'duration'; // in ms
   static const String imageUrlKey = 'imageUrl';
 
   static Song fromJson(Map<String, dynamic> json) {

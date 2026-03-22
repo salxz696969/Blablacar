@@ -21,14 +21,19 @@ class SongTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(15)
+          borderRadius: BorderRadius.circular(15),
         ),
         child: ListTile(
           onTap: onTap,
           title: Text(song.title),
+          subtitle: Text(song.artist?? song.artistId),
+          leading: CircleAvatar(
+            radius: 24,
+            backgroundImage: NetworkImage(song.imageUrl.toString()),
+          ),
           trailing: Text(
             isPlaying ? "Playing" : "",
-            style: TextStyle(color: Colors.amber),
+            style: const TextStyle(color: Colors.amber),
           ),
         ),
       ),

@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:blabla/firebase/data/repositories/artists/artist_repository.dart';
-import 'package:blabla/firebase/data/repositories/artists/artist_repository_firebase.dart';
 import 'package:blabla/firebase/model/artists/artist.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,10 +8,7 @@ import '../../dtos/song_dto.dart';
 import 'song_repository.dart';
 
 class SongRepositoryFirebase extends SongRepository {
-  final ArtistRepository artistRepository;
-
-  SongRepositoryFirebase({required this.artistRepository})
-    : super(artistRepository: artistRepository);
+  SongRepositoryFirebase({required super.artistRepository});
 
   final Uri songsUri = Uri.https(
     'class-8804f-default-rtdb.asia-southeast1.firebasedatabase.app',
@@ -27,15 +22,19 @@ class SongRepositoryFirebase extends SongRepository {
     if (response.statusCode == 200) {
       final songJson = json.decode(response.body);
 
-      final List<Song> songs = songJson.entries.map<Song>((item) {
-        return SongDto.fromJson({
-          "id": item.key,
-          "title": item.value['title'],
-          "artistId": item.value['artistId'],
-          "imageUrl": item.value['imageUrl'],
-          "duration": item.value['duration'],
-        });
-      }).toList();
+      final List<Song> songs = [];
+
+      for (var song in songJson.entries) {
+        songs.add(
+          SongDto.fromJson({
+            "id": song.key,
+            "title": song.value['title'],
+            "artistId": song.value['artistId'],
+            "imageUrl": song.value['imageUrl'],
+            "duration": song.value['duration'],
+          }),
+        );
+      }
 
       final List<Artist> artists = await artistRepository.fetchArtistByIds(
         songs.map((song) => song.artistId).toList(),
@@ -55,4 +54,3 @@ class SongRepositoryFirebase extends SongRepository {
   @override
   Future<Song?> fetchSongById(String id) async {}
 }
-

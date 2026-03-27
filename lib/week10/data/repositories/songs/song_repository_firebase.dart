@@ -18,6 +18,7 @@ class SongRepositoryFirebase extends SongRepository {
   Future<List<Song>> fetchSongs() async {
 
     if (_cachedSongs.isNotEmpty) {
+      print("Return cached songs");
       return _cachedSongs;
     }
 
@@ -31,6 +32,8 @@ class SongRepositoryFirebase extends SongRepository {
       for (final entry in songJson.entries) {
         result.add(SongDto.fromJson(entry.key, entry.value));
       }
+      _cachedSongs.addAll(result);
+      print("Fetched songs from firebase");
       return result;
     } else {
       // 2- Throw expcetion if any issue

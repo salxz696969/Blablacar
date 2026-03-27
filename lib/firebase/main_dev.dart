@@ -15,13 +15,13 @@ List<InheritedProvider> get devProviders {
 
   return [
     // 1 - Inject the song repository
-    Provider<SongRepository>(
-      create: (_) =>
-          SongRepositoryFirebase(artistRepository: ArtistRepositoryFirebase()),
-    ),
-
     Provider<ArtistRepository>(create: (_) => ArtistRepositoryFirebase()),
 
+    Provider<SongRepository>(
+      create: (context) => SongRepositoryFirebase(
+        artistRepository: context.read<ArtistRepository>(),
+      ),
+    ),
     // 2 - Inject the player state
     ChangeNotifierProvider<PlayerState>(create: (_) => PlayerState()),
 

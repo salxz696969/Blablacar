@@ -1,5 +1,6 @@
 import 'package:blabcar/ui/screens/ride_pref/location_picker_screen.dart';
 import 'package:blabcar/ui/theme/theme.dart';
+import 'package:blabcar/ui/widgets/actions/bla_button.dart';
 import 'package:blabcar/ui/widgets/display/bla_divider.dart';
 import 'package:flutter/material.dart';
 
@@ -125,6 +126,7 @@ class _RidePrefFormState extends State<RidePrefForm> {
                       Text(departure?.name ?? "Choose Departure"),
                     ],
                   ),
+                  Icon(Icons.swap_vert, color: BlaColors.primary,)
                 ],
               ),
             ),
@@ -221,21 +223,7 @@ class _RidePrefFormState extends State<RidePrefForm> {
               ),
             ),
           ),
-          Container(
-            height: 48,
-            decoration: BoxDecoration(
-              color: BlaColors.primary,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(8),
-                bottomRight: Radius.circular(8),
-              ),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              "Search",
-              style: BlaTextStyles.button.copyWith(color: Colors.white),
-            ),
-          ),
+          BlaButton(isPrimary: true, text: "Search"),
         ],
       ),
     );

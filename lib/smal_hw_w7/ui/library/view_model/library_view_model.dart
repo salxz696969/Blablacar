@@ -10,6 +10,7 @@ class LibraryViewModel extends ChangeNotifier {
 
   List<Song> _songs = [];
   bool _initialized = false;
+
   LibraryViewModel({required this.songRepository, required this.playerState});
 
   List<Song> get songs => _songs;
@@ -17,9 +18,11 @@ class LibraryViewModel extends ChangeNotifier {
 
   void init() {
     if (_initialized) return;
-    _songs = songRepository.fetchSongs();
 
+    _songs = songRepository.fetchSongs();
     _initialized = true;
+    playerState.addListener(notifyListeners);
+
     notifyListeners();
   }
 
@@ -30,9 +33,14 @@ class LibraryViewModel extends ChangeNotifier {
   void onSongTap(Song song) {
     if (isPlaying(song)) {
       playerState.stop();
-      return;
+    } else {
+      playerState.start(song);
     }
+  }
 
-    playerState.start(song);
+  @override
+  void dispose() {
+    playerState.removeListener(notifyListeners);
+    super.dispose();
   }
 }

@@ -1,27 +1,25 @@
+import 'package:blabla/week10/model/songs/song_detail.dart';
 import 'package:flutter/material.dart';
 import '../../../../data/repositories/artist/artist_repository.dart';
 import '../../../../data/repositories/songs/song_repository.dart';
 import '../../../../model/artist/artist.dart';
-import '../../../states/player_state.dart';
 import '../../../../model/songs/song.dart';
+import '../../../services/song_interaction_service.dart';
 import '../../../utils/async_value.dart';
-import 'library_item_data.dart';
 
 class LibraryViewModel extends ChangeNotifier {
   final SongRepository songRepository;
   final ArtistRepository artistRepository;
+  final SongInteractionService songInteractionService;
 
-  final PlayerState playerState;
-
-  AsyncValue<List<LibraryItemData>> data = AsyncValue.loading();
-  Set<String> likedSongs = {};
+  AsyncValue<List<SongDetail>> data = AsyncValue.loading();
 
   LibraryViewModel({
     required this.songRepository,
-    required this.playerState,
+    required this.songInteractionService,
     required this.artistRepository,
   }) {
-    playerState.addListener(notifyListeners);
+    songInteractionService.addListener(notifyListeners);
 
     // init
     _init();
@@ -29,7 +27,7 @@ class LibraryViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
-    playerState.removeListener(notifyListeners);
+    songInteractionService.removeListener(notifyListeners);
     super.dispose();
   }
 
@@ -55,10 +53,9 @@ class LibraryViewModel extends ChangeNotifier {
         mapArtist[artist.id] = artist;
       }
 
-      List<LibraryItemData> data = songs
+      List<SongDetail> data = songs
           .map(
-            (song) =>
-                LibraryItemData(song: song, artist: mapArtist[song.artistId]!),
+            (song) => SongDetail(song: song, artist: mapArtist[song.artistId]!),
           )
           .toList();
 
@@ -70,32 +67,21 @@ class LibraryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool isSongPlaying(Song song) => playerState.currentSong == song;
+  bool isSongPlaying(Song song) => songInteractionService.isSongPlaying(song);
 
-  void start(Song song) => playerState.start(song);
-  void stop(Song song) => playerState.stop();
+  void start(Song song) => songInteractionService.start(song);
+  void stop(Song song) => songInteractionService.stop();
 
-  bool isSongLiked(Song song) => likedSongs.contains(song.id);
+  bool isSongLiked(Song song) => songInteractionService.isSongLiked(song);
 
   Future<void> toggleLike(Song song) async {
-    final bool wasLiked = likedSongs.contains(song.id);
-    final Song updatedSong = wasLiked
-        ? await songRepository.unlikeSong(song)
-        : await songRepository.likeSong(song);
-
-    if (wasLiked) {
-      likedSongs.remove(song.id);
-    } else {
-      likedSongs.add(song.id);
-    }
+    final Song updatedSong = await songInteractionService.toggleLike(song);
 
     if (data.state == AsyncValueState.success && data.data != null) {
-      final List<LibraryItemData> updatedItems = [];
+      final List<SongDetail> updatedItems = [];
       for (final item in data.data!) {
         if (item.song.id == song.id) {
-          updatedItems.add(
-            LibraryItemData(song: updatedSong, artist: item.artist),
-          );
+          updatedItems.add(SongDetail(song: updatedSong, artist: item.artist));
         } else {
           updatedItems.add(item);
         }

@@ -17,8 +17,10 @@ class DownloadsScreen extends StatelessWidget {
     required this.controllers,
   }) {
     // Create a controllers for each ressource
-    for (Ressource ressource in ressources) {
-      controllers.add(DownloadController(ressource));
+    if (controllers.isEmpty) {
+      for (Ressource ressource in ressources) {
+        controllers.add(DownloadController(ressource));
+      }
     }
   }
 

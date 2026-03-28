@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import '../../../model/artist/artist.dart';
 
 class ArtistTile extends StatelessWidget {
-  const ArtistTile({
-    super.key,
-    required this.artist,
-    
-  });
+  const ArtistTile({super.key, required this.artist, required this.onTap});
 
+  final VoidCallback onTap;
   final Artist artist;
 
   @override
@@ -20,6 +17,7 @@ class ArtistTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
         ),
         child: ListTile(
+          onTap: onTap,
           title: Text(artist.name),
           subtitle: Text("Genre: ${artist.genre}"),
           leading: CircleAvatar(

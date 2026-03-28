@@ -17,7 +17,6 @@ class ArtistRepositoryFirebase implements ArtistRepository {
   @override
   Future<List<Artist>> fetchArtists() async {
     if (_cachedArtists.isNotEmpty) {
-      print("Return cached artists");
       return _cachedArtists;
     }
 
@@ -32,7 +31,6 @@ class ArtistRepositoryFirebase implements ArtistRepository {
         result.add(ArtistDto.fromJson(entry.key, entry.value));
       }
       _cachedArtists.addAll(result);
-      print("Fetched artists from firebase");
       return result;
     } else {
       // 2- Throw expcetion if any issue

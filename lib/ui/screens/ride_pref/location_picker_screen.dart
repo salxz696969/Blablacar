@@ -26,6 +26,12 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Select a location')),

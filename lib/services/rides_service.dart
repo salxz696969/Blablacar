@@ -10,6 +10,8 @@ import '../models/ride/ride.dart';
 class RidesService {
   static List<Ride> allRides = fakeRides;
 
+
+
   static List<Ride> filterByDeparture(Location departure) {
     return allRides
         .where((ride) => ride.departureLocation == departure)
@@ -41,3 +43,4 @@ class RidesService {
     return allRides;
   }
 }
+

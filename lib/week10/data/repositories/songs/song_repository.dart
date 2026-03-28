@@ -5,4 +5,5 @@ abstract class SongRepository {
   Future<Song> likeSong(Song song);
   Future<Song> unlikeSong(Song song);
   Future<Song?> fetchSongById(String id);
+  Future<List<Song>> fetchSongsByArtistId(String artistId);
 }

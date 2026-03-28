@@ -16,9 +16,7 @@ class SongRepositoryFirebase extends SongRepository {
 
   @override
   Future<List<Song>> fetchSongs() async {
-
     if (_cachedSongs.isNotEmpty) {
-      print("Return cached songs");
       return _cachedSongs;
     }
 
@@ -33,7 +31,6 @@ class SongRepositoryFirebase extends SongRepository {
         result.add(SongDto.fromJson(entry.key, entry.value));
       }
       _cachedSongs.addAll(result);
-      print("Fetched songs from firebase");
       return result;
     } else {
       // 2- Throw expcetion if any issue
@@ -53,7 +50,7 @@ class SongRepositoryFirebase extends SongRepository {
       artistId: song.artistId,
       duration: song.duration,
       imageUrl: song.imageUrl,
-      like: song.like + 1,
+      likes: song.likes + 1,
     );
     final http.Response response = await http.patch(
       songUri,
@@ -76,7 +73,7 @@ class SongRepositoryFirebase extends SongRepository {
       artistId: song.artistId,
       duration: song.duration,
       imageUrl: song.imageUrl,
-      like: song.like > 0 ? song.like - 1 : 0,
+      likes: song.likes > 0 ? song.likes - 1 : 0,
     );
     final http.Response response = await http.patch(
       songUri,
@@ -89,4 +86,16 @@ class SongRepositoryFirebase extends SongRepository {
 
   @override
   Future<Song?> fetchSongById(String id) async {}
+
+  @override
+  Future<List<Song>> fetchSongsByArtistId(String artistId) async {
+    final List<Song> songs = await fetchSongs();
+    final List<Song> result = [];
+    for (Song song in songs) {
+      if (song.artistId == artistId) {
+        result.add(song);
+      }
+    }
+    return result;
+  }
 }

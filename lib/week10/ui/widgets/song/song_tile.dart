@@ -1,8 +1,8 @@
+import 'package:blabla/week10/model/songs/song_detail.dart';
 import 'package:flutter/material.dart';
-import '../view_model/library_item_data.dart';
 
-class LibraryItemTile extends StatelessWidget {
-  const LibraryItemTile({
+class SongTile extends StatelessWidget {
+  const SongTile({
     super.key,
     required this.data,
     required this.isPlaying,
@@ -11,7 +11,7 @@ class LibraryItemTile extends StatelessWidget {
     required this.isLiked,
   });
 
-  final LibraryItemData data;
+  final SongDetail data;
   final bool isPlaying;
   final VoidCallback onTap;
   final VoidCallback onHeartTap;
@@ -33,7 +33,7 @@ class LibraryItemTile extends StatelessWidget {
             children: [
               Text("${data.song.duration.inMinutes} mins"),
               SizedBox(width: 20),
-              Text("Likes: ${data.song.like}"),
+              Text("Likes: ${data.song.likes}"),
             ],
           ),
           leading: CircleAvatar(

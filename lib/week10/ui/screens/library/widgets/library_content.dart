@@ -1,9 +1,9 @@
+import 'package:blabla/week10/model/songs/song_detail.dart';
+import 'package:blabla/week10/ui/widgets/song/song_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../theme/theme.dart';
 import '../../../utils/async_value.dart';
-import '../view_model/library_item_data.dart';
-import 'library_item_tile.dart';
 import '../view_model/library_view_model.dart';
 
 class LibraryContent extends StatelessWidget {
@@ -14,7 +14,7 @@ class LibraryContent extends StatelessWidget {
     // 1- Read the globbal song repository
     LibraryViewModel mv = context.watch<LibraryViewModel>();
 
-    AsyncValue<List<LibraryItemData>> asyncValue = mv.data;
+    AsyncValue<List<SongDetail>> asyncValue = mv.data;
 
     Widget content;
     switch (asyncValue.state) {
@@ -30,17 +30,22 @@ class LibraryContent extends StatelessWidget {
         );
 
       case AsyncValueState.success:
-        List<LibraryItemData> data = asyncValue.data!;
-        content = ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (context, index) => LibraryItemTile(
-            onHeartTap: () => mv.toggleLike(data[index].song),
-            isLiked: mv.isSongLiked(data[index].song),
-            data: data[index],
-            isPlaying: mv.isSongPlaying(data[index].song),
-            onTap: () {
-              mv.start(data[index].song);
-            },
+        List<SongDetail> data = asyncValue.data!;
+        content = RefreshIndicator(
+          onRefresh: () async {
+            mv.fetchSong();
+          },
+          child: ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, index) => SongTile(
+              onHeartTap: () => mv.toggleLike(data[index].song),
+              isLiked: mv.isSongLiked(data[index].song),
+              data: data[index],
+              isPlaying: mv.isSongPlaying(data[index].song),
+              onTap: () {
+                mv.start(data[index].song);
+              },
+            ),
           ),
         );
     }
